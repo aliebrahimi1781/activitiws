@@ -1,0 +1,87 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.spring.io/plugins-release' }
+        maven { url 'http://download.java.net/maven/2' }
+    }
+    dependencies {
+        classpath 'me.champeau.gradle:gradle-javadoc-hotfix-plugin:0.1'
+        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.2.4'
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.6'
+    }
+}
+
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'tomcat'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-idea'
+
+
+defaultTasks 'clean', 'check', 'build', 'javaDoc'
+description = 'activiti standalone'
+sourceCompatibility = 1.8
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://repo.spring.io/milestone/'}
+}
+ext{
+    servletVersion  = '3.1.0'
+    tomcatVersion   = '8.0.12'
+    springVersion   = '4.1.2.RELEASE'
+    thymeleafVersion= '2.1.3.RELEASE'
+    slf4jVersion    = '1.7.5'
+}
+dependencies{
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+    // spring
+    compile "org.springframework:spring-orm:$springVersion"
+    compile "org.springframework:spring-aop:$springVersion"
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-oxm:$springVersion"
+    compile "org.springframework:spring-core:$springVersion"
+
+
+    //thymeleaf
+    compile "org.thymeleaf:thymeleaf-spring4:${thymeleafVersion}"
+
+    // jackson
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.2'
+
+    //logger
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    runtime "org.slf4j:slf4j-log4j12:${slf4jVersion}"
+
+    //activiti
+    compile 'org.activiti:activiti-engine:5.17.0'
+    compile 'org.activiti:activiti-spring:5.17.0'
+
+    //db
+    compile 'com.zaxxer:HikariCP:2.3.2'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'
+
+
+    //test
+    testCompile 'junit:junit:4.11'
+    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile "org.hamcrest:hamcrest-library:1.3"
+    testCompile "org.springframework:spring-test:$springVersion"
+
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
+}
+compileJava.dependsOn += 'clean'
+
+[ compileJava, compileTestJava ]*.options*.encoding = 'UTF-8'
+
+[tomcatRun, tomcatRunWar, tomcatStop]*.stopPort = 8090
+[tomcatRun, tomcatRunWar, tomcatStop]*.stopKey = 'stfu'
+tomcatRunWar.contextPath = "client"
+tomcatRunWar { dependsOn += ['check'] }

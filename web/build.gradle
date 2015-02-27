@@ -29,7 +29,7 @@ apply from: "conf/gradle/jdepend.gradle"
 apply from: "conf/gradle/javadoc.gradle"
 
 defaultTasks 'clean', 'check', 'build', 'javaDoc'
-description = 'Online Search and Tracking Application'
+description = 'activiti web ui'
 sourceCompatibility = 1.8
 version = '1.0.0'
 
