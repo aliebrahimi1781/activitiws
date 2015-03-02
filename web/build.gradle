@@ -45,5 +45,5 @@ compileJava.dependsOn += 'clean'
 
 [tomcatRun, tomcatRunWar, tomcatStop]*.stopPort = 8090
 [tomcatRun, tomcatRunWar, tomcatStop]*.stopKey = 'stfu'
-tomcatRunWar.contextPath = "client"
+tomcatRunWar.contextPath = "web"
 tomcatRunWar { dependsOn += ['check'] }
