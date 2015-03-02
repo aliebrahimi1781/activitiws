@@ -13,6 +13,7 @@ hs_err_pid*
 
 # gradle
 build/
+.gradle/
 !gradle/wrapper/gradle-wrapper.jar
 
 # JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
@@ -41,3 +42,4 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+

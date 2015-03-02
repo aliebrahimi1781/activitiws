@@ -21,9 +21,6 @@ apply plugin: 'propdeps-idea'
 
 
 defaultTasks 'clean', 'check', 'build', 'javaDoc'
-description = 'activiti standalone'
-sourceCompatibility = 1.8
-version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -33,8 +30,10 @@ ext{
     servletVersion  = '3.1.0'
     tomcatVersion   = '8.0.12'
     springVersion   = '4.1.2.RELEASE'
+    springSecurityVersion   = '3.2.5.RELEASE'
     thymeleafVersion= '2.1.3.RELEASE'
     slf4jVersion    = '1.7.5'
+    activitiVersion = '5.17.0'
 }
 dependencies{
     tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
@@ -48,6 +47,11 @@ dependencies{
     compile "org.springframework:spring-webmvc:$springVersion"
     compile "org.springframework:spring-oxm:$springVersion"
     compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-core:$springVersion"
+
+
+    compile "org.springframework.security:spring-security-core:$springSecurityVersion"
+    compile "org.springframework.security:spring-security-config:$springSecurityVersion"
 
 
     //thymeleaf
@@ -61,12 +65,16 @@ dependencies{
     runtime "org.slf4j:slf4j-log4j12:${slf4jVersion}"
 
     //activiti
-    compile 'org.activiti:activiti-engine:5.17.0'
-    compile 'org.activiti:activiti-spring:5.17.0'
+    compile "org.activiti:activiti-engine:$activitiVersion"
+    compile "org.activiti:activiti-spring:$activitiVersion"
+    compile "org.activiti:activiti-rest:$activitiVersion"
+    compile "org.activiti:activiti-common-rest:$activitiVersion"
+
 
     //db
     compile 'com.zaxxer:HikariCP:2.3.2'
     compile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'
+    compile 'com.h2database:h2:1.4.185'
 
 
     //test
@@ -83,5 +91,5 @@ compileJava.dependsOn += 'clean'
 
 [tomcatRun, tomcatRunWar, tomcatStop]*.stopPort = 8090
 [tomcatRun, tomcatRunWar, tomcatStop]*.stopKey = 'stfu'
-tomcatRunWar.contextPath = "client"
+tomcatRunWar.contextPath = "activiti"
 tomcatRunWar { dependsOn += ['check'] }
